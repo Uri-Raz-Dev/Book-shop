@@ -1,0 +1,61 @@
+* {
+ box-sizing: border-box;
+}
+
+body {
+ min-height: calc(100vh-1em);
+ margin: 0;
+ padding: 0;
+ background-color: rgb(129, 125, 125);
+ font-size: 1em;
+}
+
+h1 {
+ font-weight: bold;
+ font-size: 24px;
+ text-align: center;
+}
+
+table {
+ margin: 150px auto;
+}
+
+tr td:nth-child(odd) {
+ width: 250px;
+ height: 45px;
+}
+
+tr td:nth-child(even) {
+ width: 150px;
+ height: 45px;
+}
+
+tr:nth-child(odd) {
+ background-color: white;
+}
+
+tr:nth-child(even) {
+ background-color: rgb(213, 210, 210);
+}
+
+td>* {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+
+button {
+ display: inline;
+}
+
+.read {
+ background-color: green;
+}
+
+.upadte {
+ background-color: rgb(185, 185, 3);
+}
+
+.delete {
+ background-color: red;
+}
