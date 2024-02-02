@@ -23,6 +23,7 @@ table {
 tr td:nth-child(odd) {
  width: 250px;
  height: 45px;
+
 }
 
 tr td:nth-child(even) {
@@ -38,15 +39,14 @@ tr:nth-child(even) {
  background-color: rgb(213, 210, 210);
 }
 
-td>* {
- display: flex;
- justify-content: center;
- align-items: center;
+td {
+ padding: 5px;
 }
 
 button {
  display: inline;
  font-weight: bold;
+ border-radius: 4px;
 }
 
 .read {
@@ -59,4 +59,8 @@ button {
 
 .delete {
  background-color: red;
+}
+
+.hidden {
+ display: none;
 }

@@ -3,7 +3,6 @@
 var gBooks
 
 _getBooks()
-
 function _getBooks() {
  gBooks = [
   {
@@ -28,3 +27,42 @@ function _getBooks() {
  ]
  return gBooks
 }
+
+function removeBook(bookId) {
+ const book = gBooks.findIndex(book => book.id === bookId)
+ gBooks.splice(book, 1)
+
+}
+
+
+function updatePrice() {
+ const updatePrice = prompt('Enter a new book price')
+ return updatePrice
+}
+
+function addBook() {
+ const addTitle = prompt('Enter a book title')
+ const addPrice = prompt('Enter a book price')
+ const newBook = {
+  id: makeId(),
+  title: addTitle,
+  price: addPrice,
+  imgUrl: 'imgs/default.jpg'
+ }
+ gBooks.unshift(newBook)
+ render()
+}
+
+
+// function _addBooks() {
+//  // gTodos = loadFromStorage('todoDB')
+//  if (!gBooks || gBooks.length === 0) {
+
+//   gBooks = [
+//    _createTodo('Do this'),
+//    _createTodo('Do that'),
+//    _createTodo('Try this')
+//   ]
+//   _saveTodos()
+//  }
+// }
