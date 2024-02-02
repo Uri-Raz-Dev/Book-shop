@@ -2,58 +2,32 @@
 <html lang="en">
 
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Book Shop</title>
- <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Shop</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body onload="onInit()">
- <h1>Book Shop</h1>
- <table>
-  <thead>
-   <tr class="tHeading">
-    <td>Title</td>
-    <td>Price</td>
-    <td>Actions</td>
-   </tr>
-  </thead>
-  <tbody>
-   <tr class="title">
-    <td></td>
-    <td></td>
-    <td>
-     <button class="read" onclick="onRead(this)">Read</button>
-     <button class="update" onclick="onUpdate(this)">Update</button>
-     <button class="delete" onclick="onDelete(this)">Delete</button>
-    </td>
-   </tr>
-   <tr class="Price">
-    <td></td>
-    <td></td>
-    <td>
-     <button class="read" onclick="onRead(this)">Read</button>
-     <button class="update" onclick="onUpdate(this)">Update</button>
-     <button class="delete" onclick="onDelete(this)">Delete</button>
-   </tr>
-   <tr class="Actions">
-    <td></td>
-    <td></td>
-    <td>
-     <button class="read" onclick="onRead(this)">Read</button>
-     <button class="update" onclick="onUpdate(this)">Update</button>
-     <button class="delete" onclick="onDelete(this)">Delete</button>
-    </td>
-   </tr>
-  </tbody>
- </table>
+  <h1>Book Shop</h1>
+  <table>
+    <thead>
+      <tr class="tHeading">
+        <td>Title</td>
+        <td>Price</td>
+        <td>Actions</td>
+      </tr>
+    </thead>
+    <tbody class="book-table">
+    </tbody>
+  </table>
 
- <!-- Services -->
- <script src="services/util.service.js"></script>
- <script src="services/book.service.js"></script>
+  <!-- Services -->
+  <script src="services/util.service.js"></script>
+  <script src="services/book.service.js"></script>
 
- <!-- Controllers-->
- <script src="book.contoller.js"></script>
+  <!-- Controllers-->
+  <script src="book.contoller.js"></script>
 
 </body>
 

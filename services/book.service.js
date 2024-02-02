@@ -2,7 +2,7 @@
 
 var gBooks
 
-getBooks()
+_getBooks()
 
 function _getBooks() {
  gBooks = [

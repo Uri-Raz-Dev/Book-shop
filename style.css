@@ -46,14 +46,15 @@ td>* {
 
 button {
  display: inline;
+ font-weight: bold;
 }
 
 .read {
  background-color: green;
 }
 
-.upadte {
- background-color: rgb(185, 185, 3);
+.update {
+ background-color: yellow;
 }
 
 .delete {
