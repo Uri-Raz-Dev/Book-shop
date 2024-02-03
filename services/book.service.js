@@ -7,7 +7,7 @@ function _getBooks(searchText) {
  if (!searchText) {
   return gBooks;
  } else {
-  searchText = searchText.toLowerCase()
+  searchText = searchText.trim().toLowerCase()
   return gBooks.filter(book => book.title.toLowerCase().includes(searchText))
  }
 }
@@ -36,21 +36,16 @@ function updatePrice(bookID) {
 }
 
 
-function addBook() {
- const addTitle = prompt('Enter a book title')
- const addPrice = prompt('Enter a book price')
+function addBook(title, price) {
  const newBook = {
   id: makeId(),
-  title: addTitle,
-  price: addPrice,
+  title: title,
+  price: price,
   imgUrl: 'imgs/The-Hobbit.jpg'
  }
- if (isNaN(newBook.price) || newBook.price === '' || newBook.name === '' || newBook.price === null || newBook.name === null) return alert('Invalid input!')
 
  gBooks.unshift(newBook)
  _saveBooks()
-
-
 }
 
 function readBook(bookId) {
@@ -66,6 +61,7 @@ function searchBook(txt) {
  const searchResult = gBooks.filter(book => book.title.toLowerCase().includes(txt.toLowerCase()));
  return searchResult
 }
+
 
 
 function _createBooks() {
@@ -100,4 +96,5 @@ function _createBooks() {
 function _saveBooks() {
  saveToStorage('booksDB', gBooks)
 }
+
 

@@ -10,10 +10,12 @@
 
 <body onload="onInit()">
   <h1>Book Shop</h1>
+  <div class="message hidden"></div>
   <button onclick="onAddBook(event)" class="add-book">Add Book</button>
   <form onsubmit="onSearchBook(event)" class="search-book">
     <input type="text" placeholder="Search books">
     <button>Search</button>
+    <button onclick="onClearSearch(event)">Clear Search</button>
   </form>
   <table>
     <thead>
@@ -38,7 +40,8 @@
       <div class="image-container"></div>
     </form>
   </dialog>
-  <footer></footer>
+  <footer><span class="expensive"></span><span class="average"></span><span class="cheap"></span>
+  </footer>
 
   <!-- Services -->
   <script src="services/util.service.js"></script>

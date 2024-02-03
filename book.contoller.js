@@ -1,13 +1,16 @@
 'use strict'
+
+var messageTimeout
 function onInit() {
   render()
 }
+countBookPrice()
 
 function render() {
   const elBookList = document.querySelector('.book-table')
   const elInput = document.querySelector('.search-book input')
 
-  const searchText = elInput.value
+  const searchText = elInput.value.trim()
 
   const books = _getBooks(searchText)
   const strHtmls = books.map(book =>
@@ -30,21 +33,63 @@ function render() {
 
 function onRemoveBook(ev, bookId) {
   ev.stopPropagation()
+
+  const elMessage = document.querySelector(`.message`)
+  clearTimeout(messageTimeout)
+
   removeBook(bookId)
+  elMessage.innerText = 'Book removed successfully!'
+  elMessage.classList.remove('hidden')
+  messageTimeout = setTimeout(() => {
+    elMessage.innerText = ''
+    elMessage.classList.add('hidden')
+  }
+    , 2000)
+  countBookPrice()
+
   render()
 }
 
 
 function onUpdateBook(bookId) {
+
   const elPrice = document.querySelector(`.price.${bookId}`)
-  const newPrice = updatePrice(bookId);
-  if (isNaN(newPrice) || newPrice === '') return alert('Invalid number input!')
+  const elMessage = document.querySelector(`.message`)
+  const newPrice = updatePrice(bookId)
+  clearTimeout(messageTimeout)
+  if (isNaN(newPrice) || !newPrice) return alert('Invalid number input!')
   elPrice.innerText = newPrice
+  elMessage.innerText = 'Price updated successfully!'
+  elMessage.classList.remove('hidden')
+  messageTimeout = setTimeout(() => {
+    elMessage.innerText = ''
+    elMessage.classList.add('hidden')
+  }
+    , 2000)
+  countBookPrice()
+
   render()
 }
 
 function onAddBook() {
-  addBook()
+
+  const addTitle = prompt('Enter a book title')
+  const addPrice = prompt('Enter a book price')
+  const elMessage = document.querySelector('.message')
+  clearTimeout(messageTimeout)
+
+  if (!addTitle || !addPrice || isNaN(addPrice)) return alert('Invalid Input!')
+
+  addBook(addTitle, addPrice)
+
+  elMessage.innerText = 'Book added successfully!'
+  elMessage.classList.remove('hidden')
+  messageTimeout = setTimeout(() => {
+    elMessage.innerText = ''
+    elMessage.classList.add('hidden')
+  }, 2000)
+  countBookPrice()
+
   render()
 }
 
@@ -84,3 +129,37 @@ function onSearchBook(ev) {
   ev.preventDefault()
   render()
 }
+function onClearSearch(ev) {
+  ev.preventDefault()
+  const elInput = document.querySelector('.search-book input')
+  elInput.value ? elInput.value = '' : elInput.value
+  render()
+}
+
+
+function countBookPrice() {
+  const expensive = document.querySelector('.expensive')
+  const average = document.querySelector('.average')
+  const cheap = document.querySelector('.cheap')
+
+  let expensiveCount = 0
+  let averageCount = 0
+  let cheapCount = 0
+
+  gBooks.forEach(book => {
+    if (book.price > 200) {
+      expensiveCount++
+    } else if (book.price >= 80 && book.price <= 200) {
+      averageCount++
+    } else if (book.price < 80) {
+      cheapCount++
+    }
+  })
+
+  expensive.innerText = `Expensive Books: ${expensiveCount}`
+  average.innerText = `Average price Books: ${averageCount}`
+  cheap.innerText = `Cheap Books: ${cheapCount}`
+}
+
+
+
