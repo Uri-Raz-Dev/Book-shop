@@ -7,13 +7,14 @@ function onInit() {
 function render() {
   const elBookList = document.querySelector('.book-table')
   const books = _getBooks()
+
   const strHtmls = books.map(book =>
     ` <thead>
       <tr>
         <td class="title">${book.title}</td>
-        <td class="price">${book.price}</td>
+        <td class="price ${book.id}">${book.price}</td>
         <td>
-          <button class="read" onclick="onRead('${book.id}')">Read</button>
+          <button class="read" onclick="onReadBook('${book.id}','${book.title}')">Read</button>
           <button class="update" onclick="onUpdateBook('${book.id}')">Update</button>
           <button class="delete" onclick="onRemoveBook(event,'${book.id}')">Delete</button>
         </td>
@@ -27,17 +28,52 @@ function render() {
 function onRemoveBook(ev, bookId) {
   ev.stopPropagation()
   removeBook(bookId)
-  ev.target.closest('tr').remove()
+  render()
 }
 
-function onUpdateBook(bookPrice) {
-  const elPrice = document.querySelector('.price')
-  const newPrice = updatePrice(bookPrice)
+
+function onUpdateBook(bookId) {
+  const elPrice = document.querySelector(`.price.${bookId}`)
+  const newPrice = updatePrice(bookId);
   if (isNaN(newPrice) || newPrice === '') return alert('Invalid number input!')
   elPrice.innerText = newPrice
+  render()
 }
 
 function onAddBook() {
   addBook()
   render()
 }
+
+function onReadBook(bookId, bookTitle) {
+  const elModal = document.querySelector('.book-details')
+  const elTxt = elModal.querySelector('h2 span')
+  const elLeftColumn = elModal.querySelector('.left-column')
+  const elRightColumn = elModal.querySelector('.right-column')
+  const elImageContainer = elModal.querySelector('.image-container')
+
+  const book = readBook(bookId)
+  const bookKeys = Object.keys(book).filter(key => key !== 'imgUrl')
+
+  elTxt.innerText = bookTitle
+
+  elLeftColumn.innerHTML = ''
+  elRightColumn.innerHTML = ''
+  elImageContainer.innerHTML = ''
+
+  bookKeys.forEach(key => {
+    const bookKey = key.toUpperCase()
+    const value = book[key]
+
+    elLeftColumn.innerHTML += `<div class="grid-item">${bookKey}</div>`
+    elRightColumn.innerHTML += `<div class="grid-item">${value}</div>`
+  })
+
+  const imgUrl = book.imgUrl
+  if (imgUrl) {
+    elImageContainer.innerHTML = `<img src="${imgUrl}" alt="Book Cover" class="book-image">`
+  }
+
+  elModal.showModal()
+}
+

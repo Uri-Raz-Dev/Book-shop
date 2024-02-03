@@ -1,30 +1,28 @@
 'use strict'
 
-var gBooks
+var gBooks = [
+ {
+  id: makeId(),
+  title: 'A Clash of Kings',
+  price: 55,
+  imgUrl: 'imgs/A-Clash-of-Kings.jpg'
+ },
+ {
+  id: makeId(),
+  title: 'The Return of the king',
+  price: 100,
+  imgUrl: 'imgs/The-Return-of-the-King.jpg'
+ },
+ {
+  id: makeId(),
+  title: 'Harry Potter and the Order of the Phoenix',
+  price: 75,
+  imgUrl: 'imgs/Harry-Potter.jpg'
+ },
 
-_getBooks()
+]
+
 function _getBooks() {
- gBooks = [
-  {
-   id: makeId(),
-   title: 'A Clash of Kings',
-   price: 55,
-   imgUrl: 'imgs/A-Clash-of-Kings.jpg'
-  },
-  {
-   id: makeId(),
-   title: 'The Return of the king',
-   price: 100,
-   imgUrl: 'imgs/The-Return-of-the-King.jpg'
-  },
-  {
-   id: makeId(),
-   title: 'Harry Potter and the Order of the Phoenix',
-   price: 75,
-   imgUrl: 'imgs/Harry-Potter.jpg'
-  },
-
- ]
  return gBooks
 }
 
@@ -35,10 +33,19 @@ function removeBook(bookId) {
 }
 
 
-function updatePrice() {
+
+function updatePrice(bookID) {
  const updatePrice = prompt('Enter a new book price')
+ gBooks.findIndex(book => {
+
+  if (book.id === bookID) {
+   book.price = +updatePrice
+  }
+ }
+ )
  return updatePrice
 }
+
 
 function addBook() {
  const addTitle = prompt('Enter a book title')
@@ -47,22 +54,16 @@ function addBook() {
   id: makeId(),
   title: addTitle,
   price: addPrice,
-  imgUrl: 'imgs/default.jpg'
+  imgUrl: 'imgs/The-Hobbit.jpg'
  }
+ if (isNaN(newBook.price) || newBook.price === '' || newBook.name === '' || newBook.price === null || newBook.name === null) return alert('Invalid input!')
+
  gBooks.unshift(newBook)
- render()
+
 }
 
+function readBook(bookId) {
 
-// function _addBooks() {
-//  // gTodos = loadFromStorage('todoDB')
-//  if (!gBooks || gBooks.length === 0) {
-
-//   gBooks = [
-//    _createTodo('Do this'),
-//    _createTodo('Do that'),
-//    _createTodo('Try this')
-//   ]
-//   _saveTodos()
-//  }
-// }
+ const book = gBooks.find(book => book.id === bookId)
+ return book
+}

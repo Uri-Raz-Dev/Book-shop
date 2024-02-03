@@ -64,3 +64,18 @@ button {
 .hidden {
  display: none;
 }
+
+.grid-container {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 10px;
+}
+
+.grid-item {
+ padding: 5px;
+ border: 1px solid #ccc;
+}
+
+.book-image {
+ width: 100%;
+}
