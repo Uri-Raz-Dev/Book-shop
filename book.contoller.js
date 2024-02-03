@@ -13,8 +13,17 @@ function render() {
   const searchText = elInput.value.trim()
 
   const books = _getBooks(searchText)
-  const strHtmls = books.map(book =>
-    ` 
+
+  if (books.length === 0) {
+    elBookList.innerHTML = `
+      <div class="empty-search">
+        <p>No matching books were found...</p>
+      </div>
+    `
+  } else {
+
+    const strHtmls = books.map(book =>
+      ` 
       <tr>
         <td class="title">${book.title}</td>
         <td class="price ${book.id}">${book.price}</td>
@@ -26,10 +35,10 @@ function render() {
       </tr>
       
       `
-  )
-  elBookList.innerHTML = strHtmls.join('')
+    )
+    elBookList.innerHTML = strHtmls.join('')
+  }
 }
-
 
 function onRemoveBook(ev, bookId) {
   ev.stopPropagation()
@@ -127,6 +136,7 @@ function onReadBook(bookId, bookTitle) {
 
 function onSearchBook(ev) {
   ev.preventDefault()
+
   render()
 }
 function onClearSearch(ev) {
