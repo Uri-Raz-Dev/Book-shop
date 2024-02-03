@@ -1,15 +1,17 @@
 'use strict'
-
 function onInit() {
   render()
 }
 
 function render() {
   const elBookList = document.querySelector('.book-table')
-  const books = _getBooks()
+  const elInput = document.querySelector('.search-book input')
 
+  const searchText = elInput.value
+
+  const books = _getBooks(searchText)
   const strHtmls = books.map(book =>
-    ` <thead>
+    ` 
       <tr>
         <td class="title">${book.title}</td>
         <td class="price ${book.id}">${book.price}</td>
@@ -19,6 +21,7 @@ function render() {
           <button class="delete" onclick="onRemoveBook(event,'${book.id}')">Delete</button>
         </td>
       </tr>
+      
       `
   )
   elBookList.innerHTML = strHtmls.join('')
@@ -77,3 +80,7 @@ function onReadBook(bookId, bookTitle) {
   elModal.showModal()
 }
 
+function onSearchBook(ev) {
+  ev.preventDefault()
+  render()
+}

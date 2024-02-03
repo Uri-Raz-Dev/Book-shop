@@ -10,7 +10,10 @@
 
 <body onload="onInit()">
   <h1>Book Shop</h1>
-  <button onclick="onAddBook(event)" class="add-book">Add</button>
+  <button onclick="onAddBook(event)" class="add-book">Add Book</button>
+  <form onsubmit="onSearchBook(event)" class="search-book">
+    <input type="text" placeholder="Search books">
+    <button>Search</button>
   </form>
   <table>
     <thead>
@@ -35,7 +38,7 @@
       <div class="image-container"></div>
     </form>
   </dialog>
-
+  <footer></footer>
 
   <!-- Services -->
   <script src="services/util.service.js"></script>

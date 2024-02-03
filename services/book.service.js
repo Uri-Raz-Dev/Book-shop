@@ -3,9 +3,15 @@
 var gBooks
 _createBooks()
 
-function _getBooks() {
- return gBooks
+function _getBooks(searchText) {
+ if (!searchText) {
+  return gBooks;
+ } else {
+  searchText = searchText.toLowerCase()
+  return gBooks.filter(book => book.title.toLowerCase().includes(searchText))
+ }
 }
+
 
 function removeBook(bookId) {
  const book = gBooks.findIndex(book => book.id === bookId)
@@ -55,6 +61,12 @@ function readBook(bookId) {
  return book
 }
 
+function searchBook(txt) {
+ if (!txt) return gBooks
+ const searchResult = gBooks.filter(book => book.title.toLowerCase().includes(txt.toLowerCase()));
+ return searchResult
+}
+
 
 function _createBooks() {
  gBooks = loadFromStorage('booksDB')
@@ -88,3 +100,4 @@ function _createBooks() {
 function _saveBooks() {
  saveToStorage('booksDB', gBooks)
 }
+

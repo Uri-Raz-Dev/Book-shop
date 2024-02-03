@@ -17,6 +17,7 @@ h1 {
 }
 
 table {
+ z-index: 1;
  margin: 150px auto;
 }
 
@@ -78,4 +79,8 @@ button {
 
 .book-image {
  width: 100%;
+}
+
+.add-book {
+ margin: 0px auto;
 }
