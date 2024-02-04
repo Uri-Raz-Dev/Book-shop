@@ -10,13 +10,16 @@
 
 <body onload="onInit()">
   <h1>Book Shop</h1>
+
   <div class="message hidden"></div>
   <button onclick="onAddBook(event)" class="add-book">Add Book</button>
+
   <form onsubmit="onSearchBook(event)" class="search-book">
-    <input type="text" placeholder="Search books">
+    <input class="serach-input" type="text" placeholder="Search books">
     <button>Search</button>
     <button onclick="onClearSearch(event)">Clear Search</button>
   </form>
+
   <table>
     <thead>
       <tr class="tHeading">
@@ -28,6 +31,7 @@
     <tbody class="book-table">
     </tbody>
   </table>
+
   <dialog class="book-details">
     <form method="dialog">
       <button>x</button>
@@ -40,6 +44,7 @@
       <div class="image-container"></div>
     </form>
   </dialog>
+
   <footer><span class="expensive"></span><span class="average"></span><span class="cheap"></span>
   </footer>
 

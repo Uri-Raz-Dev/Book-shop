@@ -1,23 +1,22 @@
 'use strict'
 
+var gSearchTerm = ''
 var messageTimeout
 function onInit() {
   render()
 }
-countBookPrice()
+
 
 function render() {
   const elBookList = document.querySelector('.book-table')
   const elInput = document.querySelector('.search-book input')
 
-  const searchText = elInput.value.trim()
-
-  const books = getBooks(searchText)
+  const books = getBooks(gSearchTerm)
 
   if (books.length === 0 && elInput.value) {
     elBookList.innerHTML = `
       <div class="empty-search">
-        <p>No matching books were found...</p>
+       <p> No matching books were found...</p>
       </div>
     `
   } else {
@@ -36,6 +35,7 @@ function render() {
       
       `
     )
+    updateBookPriceCount()
     elBookList.innerHTML = strHtmls.join('')
   }
 }
@@ -54,7 +54,6 @@ function onRemoveBook(ev, bookId) {
     elMessage.classList.add('hidden')
   }
     , 2000)
-  countBookPrice()
 
   render()
 }
@@ -62,20 +61,10 @@ function onRemoveBook(ev, bookId) {
 
 function onUpdateBook(bookId) {
 
-  const elPrice = document.querySelector(`.price`)
-  const elMessage = document.querySelector(`.message`)
-  const newPrice = updatePrice(bookId)
-  clearTimeout(messageTimeout)
-  if (isNaN(newPrice) || !newPrice || newPrice < 0) return alert('Invalid number input!')
-  elPrice.innerText = newPrice
-  elMessage.innerText = 'Price updated successfully!'
-  elMessage.classList.remove('hidden')
-  messageTimeout = setTimeout(() => {
-    elMessage.innerText = ''
-    elMessage.classList.add('hidden')
-  }
-    , 2000)
-  countBookPrice()
+  const price = prompt('Enter a new book price')
+  if (price < 0 || isNaN(price) || !price) return alert('Invalid number input!')
+
+  updatePrice(price, bookId)
 
   render()
 }
@@ -136,40 +125,32 @@ function onReadBook(bookId, bookTitle) {
 
 function onSearchBook(ev) {
   ev.preventDefault()
+  const txt = document.querySelector('.serach-input').value
+
+  gSearchTerm = txt
 
   render()
 }
 function onClearSearch(ev) {
   ev.preventDefault()
-  const elInput = document.querySelector('.search-book input')
-  elInput.value ? elInput.value = '' : elInput.value
+  gSearchTerm = ''
+  const txt = document.querySelector('.serach-input').value = ''
+  gSearchTerm = txt
   render()
 }
 
 
-function countBookPrice() {
+function updateBookPriceCount() {
   const expensive = document.querySelector('.expensive')
   const average = document.querySelector('.average')
   const cheap = document.querySelector('.cheap')
 
-  let expensiveCount = 0
-  let averageCount = 0
-  let cheapCount = 0
 
-  gBooks.forEach(book => {
-    if (book.price > 200) {
-      expensiveCount++
-    } else if (book.price >= 80 && book.price <= 200) {
-      averageCount++
-    } else if (book.price < 80) {
-      cheapCount++
-    }
-  })
+  const countPrice = countBookPrice()
 
-  expensive.innerText = `Expensive Books: ${expensiveCount}`
-  average.innerText = `Mid-priced Books: ${averageCount}`
-  cheap.innerText = `Cheap Books: ${cheapCount}`
+  expensive.innerText = 'Expensive Books: ' + countPrice[0]
+  average.innerText = 'Mid-priced Books: ' + countPrice[1]
+  cheap.innerText = 'Cheap Books: ' + countPrice[2]
 }
-
 
 
