@@ -49,6 +49,7 @@ button {
  display: inline;
  font-weight: bold;
  border-radius: 4px;
+ cursor: pointer;
 }
 
 footer {

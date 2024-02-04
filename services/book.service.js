@@ -3,7 +3,7 @@
 var gBooks
 _createBooks()
 
-function _getBooks(searchText) {
+function getBooks(searchText) {
  if (!searchText) {
   return gBooks;
  } else {
@@ -23,11 +23,10 @@ function removeBook(bookId) {
 
 function updatePrice(bookID) {
  const updatePrice = prompt('Enter a new book price')
+ if (updatePrice < 0 || isNaN(updatePrice) || !updatePrice) return
  gBooks.findIndex(book => {
-
-  if (book.id === bookID) {
+  if (book.id === bookID)
    book.price = +updatePrice
-  }
  }
  )
  _saveBooks()

@@ -12,9 +12,9 @@ function render() {
 
   const searchText = elInput.value.trim()
 
-  const books = _getBooks(searchText)
+  const books = getBooks(searchText)
 
-  if (books.length === 0) {
+  if (books.length === 0 && elInput.value) {
     elBookList.innerHTML = `
       <div class="empty-search">
         <p>No matching books were found...</p>
@@ -26,7 +26,7 @@ function render() {
       ` 
       <tr>
         <td class="title">${book.title}</td>
-        <td class="price ${book.id}">${book.price}</td>
+        <td class="price">${book.price}</td>
         <td>
           <button class="read" onclick="onReadBook('${book.id}','${book.title}')">Read</button>
           <button class="update" onclick="onUpdateBook('${book.id}')">Update</button>
@@ -62,11 +62,11 @@ function onRemoveBook(ev, bookId) {
 
 function onUpdateBook(bookId) {
 
-  const elPrice = document.querySelector(`.price.${bookId}`)
+  const elPrice = document.querySelector(`.price`)
   const elMessage = document.querySelector(`.message`)
   const newPrice = updatePrice(bookId)
   clearTimeout(messageTimeout)
-  if (isNaN(newPrice) || !newPrice) return alert('Invalid number input!')
+  if (isNaN(newPrice) || !newPrice || newPrice < 0) return alert('Invalid number input!')
   elPrice.innerText = newPrice
   elMessage.innerText = 'Price updated successfully!'
   elMessage.classList.remove('hidden')
@@ -83,7 +83,7 @@ function onUpdateBook(bookId) {
 function onAddBook() {
 
   const addTitle = prompt('Enter a book title')
-  const addPrice = prompt('Enter a book price')
+  const addPrice = +prompt('Enter a book price')
   const elMessage = document.querySelector('.message')
   clearTimeout(messageTimeout)
 
@@ -167,7 +167,7 @@ function countBookPrice() {
   })
 
   expensive.innerText = `Expensive Books: ${expensiveCount}`
-  average.innerText = `Average price Books: ${averageCount}`
+  average.innerText = `Mid-priced Books: ${averageCount}`
   cheap.innerText = `Cheap Books: ${cheapCount}`
 }
 
