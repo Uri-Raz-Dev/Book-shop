@@ -22,14 +22,16 @@ table {
  margin: 150px auto;
 }
 
-tr td:nth-child(odd) {
+tr td:nth-child(1),
+tr td:nth-child(4) {
  width: 250px;
  height: 45px;
 
 }
 
-tr td:nth-child(even) {
- width: 150px;
+tr td:nth-child(2),
+tr td:nth-child(3) {
+ width: 100px;
  height: 45px;
 }
 
@@ -103,7 +105,8 @@ footer {
 }
 
 .message {
- text-align: center;
+ position: absolute;
+ left: 45%;
  color: rgb(61, 205, 61);
  font-weight: bolder;
 }
@@ -114,11 +117,11 @@ footer {
 }
 
 .empty-search {
- display: flex;
  text-align: center;
  font-size: 36px;
  text-wrap: nowrap;
  border: 1px solid #ccc;
  background-color: white;
  opacity: 0.5;
+ width: 100%;
 }

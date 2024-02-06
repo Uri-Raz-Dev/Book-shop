@@ -15,10 +15,11 @@ function render() {
 
   if (books.length === 0 && elInput.value) {
     elBookList.innerHTML = `
-      <div class="empty-search">
-       <p> No matching books were found...</p>
-      </div>
-    `
+        <tr class="empty-search">
+        
+        <td class="empty-search" rowspan="3" colspan="3" >No matching books were found...</td>
+
+        </tr>`
   } else {
 
     const strHtmls = books.map(book =>
@@ -26,11 +27,13 @@ function render() {
       <tr>
         <td class="title">${book.title}</td>
         <td class="price">${book.price}</td>
+        <td class="price">${book.rating}</td>
         <td>
           <button class="read" onclick="onReadBook('${book.id}','${book.title}')">Read</button>
           <button class="update" onclick="onUpdateBook('${book.id}')">Update</button>
           <button class="delete" onclick="onRemoveBook(event,'${book.id}')">Delete</button>
         </td>
+
       </tr>
       
       `
