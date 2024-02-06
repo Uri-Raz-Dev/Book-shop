@@ -11,14 +11,66 @@
 <body onload="onInit()">
   <h1>Book Shop</h1>
 
-  <div class="message hidden"></div>
-  <button onclick="onAddBook(event)" class="add-book">Add Book</button>
+  <section class="book-filter"></section>
+  <fieldset>
+    <legend>Filter and Sorting</legend>
+    <div class="message hidden"></div>
+    <button onclick="onAddBook(event)" class="add-book">Add Book</button>
 
-  <form onsubmit="onSearchBook(event)" class="search-book">
-    <input class="serach-input" type="text" placeholder="Search books">
-    <button>Search</button>
-    <button onclick="onClearSearch(event)">Clear Search</button>
-  </form>
+    <form onsubmit="onSearchBook(event)" class="search-book">
+      <input class="serach-input" type="text" placeholder="Search books">
+      <button>Search</button>
+      <button onclick="onClearSearch(event)">Clear Search</button>
+    </form>
+    <div class="filter-by">
+      <select class="book-list" onchange="onSetFilterBy({title: this.value})">
+        <option value="">Select book</option>
+      </select>
+
+      <label>
+        <span>Min Rating:</span>
+        <input type="range" min="0" max="5" value="0"
+          onchange="this.title=this.value;onSetFilterBy({minRating: +this.value})" />
+      </label>
+    </div>
+
+    <div class="sort-by">
+      <select onchange="onSetSortBy()">
+        <option value="">Select Sorting</option>
+        <option value="title">By Title</option>
+        <option value="minRating">By Rating</option>
+        <option value="price">By Price</option>
+      </select>
+
+      <!-- 
+      <label>
+        <span>Descending</span>
+        <input class="sort-desc" type="checkbox" oninput="onSetSortBy()" />
+      </label> -->
+
+
+      <form>
+        <input type="radio" class="ascendingRadio" name="sortBy" value="title" onchange="onSetSortBy()">
+        <label for="ascendingRadio">Ascending</label><br>
+
+        <input type="radio" class="descendingRadio" name="sortBy" value="minRating" onchange="onSetSortBy()">
+        <label for="descendingRadio">Descending</label><br>
+      </form>
+
+
+
+    </div>
+
+  </fieldset>
+  </section>
+  <dialog class="modal">
+    <h3></h3>
+    <h4>Min Rating <span></span> </h4>
+    <img src="" alt="">
+    <p></p>
+    <button onclick="onCloseModal()">Close</button>
+  </dialog>
+
 
   <table>
     <thead>

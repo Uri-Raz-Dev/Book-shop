@@ -1,8 +1,14 @@
 'use strict'
-
-var gSearchTerm = ''
+var gSearchTerm
 var messageTimeout
+const gQueryOptions = {
+  filterBy: { txt: '', minRating: 0 },
+  sortBy: {},
+  page: { idx: 0, size: 4 }
+
+}
 function onInit() {
+  renderBookTitles()
   render()
 }
 
@@ -11,7 +17,7 @@ function render() {
   const elBookList = document.querySelector('.book-table')
   const elInput = document.querySelector('.search-book input')
 
-  const books = getBooks(gSearchTerm)
+  const books = getBooks(gSearchTerm, gQueryOptions)
 
   if (books.length === 0 && elInput.value) {
     elBookList.innerHTML = `
@@ -42,6 +48,58 @@ function render() {
     elBookList.innerHTML = strHtmls.join('')
   }
 }
+
+
+function renderBookTitles() {
+  const bookTitles = getBookTitle()
+
+  const strHtml = bookTitles.map(title => `
+        <option>${title}</option>
+    `).join('')
+
+  const elList = document.querySelector('.book-list')
+  elList.innerHTML += strHtml
+}
+
+function onSetFilterBy() {
+  const elTitle = document.querySelector('.filter-by select')
+  const elMinRating = document.querySelector('.filter-by input')
+
+  gQueryOptions.filterBy.txt = elTitle.value
+  gQueryOptions.filterBy.minRating = elMinRating.value
+
+  render()
+}
+
+function onSetSortBy() {
+  const elSortBy = document.querySelector('.sort-by select')
+  const ascendingRadio = document.querySelector('.ascendingRadio')
+  const descendingRadio = document.querySelector('.descendingRadio')
+
+  const sortBy = elSortBy.value
+
+  var dir = 1
+  if (ascendingRadio.checked) {
+    dir = 1
+  } else if (descendingRadio.checked) {
+    dir = -1
+  }
+
+  if (sortBy === 'title') {
+    gQueryOptions.sortBy = { title: dir }
+  } else if (sortBy === 'minRating') {
+    gQueryOptions.sortBy = { rating: dir }
+  } else if (sortBy === 'price') {
+    gQueryOptions.sortBy = { price: dir }
+  }
+
+
+  render()
+}
+
+
+
+
 
 function onRemoveBook(ev, bookId) {
   ev.stopPropagation()
@@ -138,6 +196,13 @@ function onClearSearch(ev) {
   ev.preventDefault()
   gSearchTerm = ''
   const txt = document.querySelector('.serach-input').value = ''
+  document.querySelector('.filter-by select').value = ""
+  document.querySelector('.filter-by input').value = 0
+
+  gQueryOptions.filterBy.txt = ''
+  gQueryOptions.filterBy.minRating = 0
+
+
   gSearchTerm = txt
   render()
 }
