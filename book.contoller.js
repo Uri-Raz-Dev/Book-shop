@@ -119,6 +119,34 @@ function onRemoveBook(ev, bookId) {
   render()
 }
 
+function onNextPage(ev) {
+  ev.stopPropagation()
+
+  const bookCount = getBookCount(gQueryOptions.filterBy)
+
+  if (bookCount > (gQueryOptions.page.idx + 1) * gQueryOptions.page.size) {
+    gQueryOptions.page.idx++
+    console.log(gQueryOptions.page.idx)
+
+  } else {
+    gQueryOptions.page.idx = 0
+  }
+  render()
+}
+function onPreviousPage(ev) {
+  ev.stopPropagation()
+
+  const bookCount = getBookCount(gQueryOptions.filterBy)
+
+  if (gQueryOptions.page.idx > 0) {
+    gQueryOptions.page.idx--
+  } else {
+
+    gQueryOptions.page.idx = Math.ceil(bookCount / gQueryOptions.page.size) - 1
+  }
+
+  render()
+}
 
 function onUpdateBook(bookId) {
 

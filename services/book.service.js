@@ -18,12 +18,19 @@ function getBooks(searchText, options = {}) {
   } else if (options.sortBy.price) {
     books.sort((book1, book2) => (book1.price - book2.price) * options.sortBy.price)
   }
+  if (options.page) {
+    var startIdx = options.page.idx * options.page.size
+    books = books.slice(startIdx, startIdx + options.page.size)
+  }
+
+
   if (!searchText) {
     return books
   } else {
     searchText = searchText.trim().toLowerCase()
     return books.filter(book => book.title.toLowerCase().includes(searchText))
   }
+
 }
 
 
