@@ -37,8 +37,8 @@ function render() {
         <td>
           <button class="read" onclick="onReadBook('${book.id}','${book.title}')">Read</button>
             <button class="update" onclick="openUpdateBookModal('${book.id}')">Update</button>
-<dialog class="updateBookModal modal hidden">
-      <form onsubmit="onUpdateBook(event,'${book.id}')">
+<dialog id="updateBookModal-${book.id}" class="updateBookModal modal hidden">
+      <form  onsubmit="onUpdateBook(event,'${book.id}')">
         <h2>Update Book</h2>
         <label for="title">Title:</label>
         <input type="text" class="upTitle" required>
@@ -49,8 +49,8 @@ function render() {
         <label for="imgUrl">Image URL:</label>
         <input type="text" class="upImgUrl">
         <button type="submit">Update</button>
+        <button value="" formnovalidate onclick="closeUpdateBookModal()">Close</button>
       </form>
-      <button onclick="closeUpdateBookModal()">Close</button>
     </dialog>
 
 
@@ -166,34 +166,34 @@ function onPreviousPage(ev) {
 
 
 
-// Function to open the modal for adding a book
 function openAddBookModal() {
   const modal = document.querySelector('.addBookModal')
   modal.style.display = 'flex'
 }
 
-// Function to close the modal for adding a book
 function closeAddBookModal() {
   const modal = document.querySelector('.addBookModal')
   modal.style.display = 'none'
+  modal.close()
 }
 
 
-function openUpdateBookModal(bookID) {
-  const modal = document.querySelector('.updateBookModal')
+function openUpdateBookModal(bookId) {
+  const modal = document.querySelector(`#updateBookModal-${bookId}`)
   modal.style.display = 'flex'
 }
 
-// Function to close the modal for adding a book
-function closeUpdateBookModal(bookID) {
-  const modal = document.querySelector('.updateBookModal')
+function closeUpdateBookModal(ev) {
+  const modal = document.querySelector(`.updateBookModal`)
+  modal.close()
   modal.style.display = 'none'
+
 }
 
-// Function to handle form submission and add a new book
 function onAddBook(event) {
   event.preventDefault()
-
+  const elMessage = document.querySelector(`.message`)
+  clearTimeout(messageTimeout)
   const title = document.querySelector('.title').value
   const price = +document.querySelector('.price').value
   const rating = +document.querySelector('.rating').value
@@ -201,20 +201,37 @@ function onAddBook(event) {
 
   addBook(title, price, rating, imgUrl)
   closeAddBookModal()
-
+  elMessage.innerText = 'Book added successfully!'
+  elMessage.classList.remove('hidden')
+  messageTimeout = setTimeout(() => {
+    elMessage.innerText = ''
+    elMessage.classList.add('hidden')
+  }
+    , 2000)
   render()
 }
-// function onUpdateBook(ev, bookId) {
-//   ev.preventDefault()
 
-//   const title = document.querySelector('.upTitle').value
-//   const price = +document.querySelector('.upPrice').value
-//   const rating = +document.querySelector('.upRating').value
-//   const imgUrl = document.querySelector('.upImgUrl').value
-//   updateBook(bookId, title, price, rating, imgUrl)
-//   closeUpdateBookModal()
-//   render()
-// }
+function onUpdateBook(ev, bookId) {
+  ev.preventDefault()
+  const elMessage = document.querySelector(`.message`)
+  clearTimeout(messageTimeout)
+  const title = document.querySelector(`#updateBookModal-${bookId} .upTitle`).value
+  const price = +document.querySelector(`#updateBookModal-${bookId} .upPrice`).value
+  const rating = +document.querySelector(`#updateBookModal-${bookId} .upRating`).value
+  const imgUrl = document.querySelector(`#updateBookModal-${bookId} .upImgUrl`).value
+  updateBook(bookId, title, price, rating, imgUrl)
+  closeUpdateBookModal()
+  elMessage.innerText = 'Book updated successfully!'
+  elMessage.classList.remove('hidden')
+  messageTimeout = setTimeout(() => {
+    elMessage.innerText = ''
+    elMessage.classList.add('hidden')
+  }
+    , 2000)
+  render()
+}
+
+
 
 
 function onReadBook(bookId, bookTitle) {
@@ -277,6 +294,7 @@ function updateBookPriceCount() {
   const expensive = document.querySelector('.expensive')
   const average = document.querySelector('.average')
   const cheap = document.querySelector('.cheap')
+  const totalBooks = document.querySelector('.total')
 
 
   const countPrice = countBookPrice()
@@ -284,6 +302,7 @@ function updateBookPriceCount() {
   expensive.innerText = 'Expensive Books: ' + countPrice[0]
   average.innerText = 'Mid-priced Books: ' + countPrice[1]
   cheap.innerText = 'Cheap Books: ' + countPrice[2]
+  totalBooks.innerText = 'Total Books: ' + countPrice[3]
 }
 
 

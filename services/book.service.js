@@ -47,14 +47,17 @@ function removeBook(bookId) {
   gBooks.splice(book, 1)
   _saveBooks()
 }
-// function updateBook(bookId, title, price, rating, imgUrl) {
-//   const bookToUpdate = gBooks.find(book => book.id === bookId)
-//   bookToUpdate.title = title
-//   bookToUpdate.price = +price
-//   bookToUpdate.rating = +rating
-//   bookToUpdate.imgUrl = imgUrl
-//   _saveBooks()
-// }
+
+
+function updateBook(bookId, title, price, rating, imgUrl) {
+  const bookToUpdate = gBooks.find(book => book.id === bookId)
+  bookToUpdate.title = title
+  bookToUpdate.price = +price
+  bookToUpdate.rating = +rating
+  bookToUpdate.imgUrl = imgUrl
+  _saveBooks()
+  return bookToUpdate
+}
 
 
 function addBook(title, price, rating, imgUrl) {
@@ -73,6 +76,8 @@ function addBook(title, price, rating, imgUrl) {
 function readBook(bookId) {
 
   const book = gBooks.find(book => book.id === bookId)
+  console.log(book);
+
   _saveBooks()
 
   return book
@@ -120,7 +125,7 @@ function countBookPrice() {
   var expensiveCount = 0
   var averageCount = 0
   var cheapCount = 0
-
+  var totalCount = 0
   gBooks.forEach(book => {
     if (book.price > 200) {
       expensiveCount++
@@ -130,7 +135,8 @@ function countBookPrice() {
       cheapCount++
     }
   })
-  return [expensiveCount, averageCount, cheapCount]
+  totalCount = expensiveCount + averageCount + cheapCount
+  return [expensiveCount, averageCount, cheapCount, totalCount]
 }
 
 function _filterBooks(filterBy) {
