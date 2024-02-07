@@ -15,7 +15,24 @@
   <fieldset>
     <legend>Filter and Sorting</legend>
     <div class="message hidden"></div>
-    <button onclick="onAddBook(event)" class="add-book">Add Book</button>
+    <button onclick="openAddBookModal()">Add Book</button>
+
+    <dialog class="addBookModal modal hidden">
+      <form onsubmit="onAddBook(event)">
+        <h2>Add Book</h2>
+        <label for="title">Title:</label>
+        <input type="text" class="title" required>
+        <label for="price">Price:</label>
+        <input type="number" class="price" required>
+        <label for="rating">Rating:</label>
+        <input type="number" class="rating" min="1" max="5" required>
+        <label for="imgUrl">Image URL:</label>
+        <input type="text" class="imgUrl">
+        <button type="submit">Add</button>
+        <button onclick="closeAddBookModal()">Close</button>
+      </form>
+    </dialog>
+
     <button title="Previous Page" onclick="onPreviousPage(event)">Previous Page</button><button title="Next Page"
       onclick="onNextPage(event)">Next Page</button>
     <form onsubmit="onSearchBook(event)" class="search-book">
@@ -98,6 +115,8 @@
       <div class="image-container"></div>
     </form>
   </dialog>
+
+
 
   <footer><span class="expensive"></span><span class="average"></span><span class="cheap"></span>
   </footer>

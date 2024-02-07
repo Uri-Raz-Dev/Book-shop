@@ -47,27 +47,27 @@ function removeBook(bookId) {
   gBooks.splice(book, 1)
   _saveBooks()
 }
+// function updateBook(bookId, title, price, rating, imgUrl) {
+//   const bookToUpdate = gBooks.find(book => book.id === bookId)
+//   bookToUpdate.title = title
+//   bookToUpdate.price = +price
+//   bookToUpdate.rating = +rating
+//   bookToUpdate.imgUrl = imgUrl
+//   _saveBooks()
+// }
 
 
-
-function updatePrice(newPrice, bookID) {
-  const bookToUpdate = gBooks.find(book => book.id === bookID)
-  bookToUpdate.price = +newPrice
-  _saveBooks()
-}
-
-
-function addBook(title, price) {
+function addBook(title, price, rating, imgUrl) {
   const newBook = {
     id: makeId(),
-    title: title,
-    price: price,
-    rating: getRandomIntInc(1, 5),
-    imgUrl: 'imgs/The-Hobbit.jpg'
+    title,
+    price,
+    rating,
+    imgUrl,
   }
 
-  gBooks.unshift(newBook)
-  _saveBooks()
+  gBooks.unshift(newBook);
+  _saveBooks();
 }
 
 function readBook(bookId) {
@@ -77,6 +77,7 @@ function readBook(bookId) {
 
   return book
 }
+
 
 
 function _createBooks() {

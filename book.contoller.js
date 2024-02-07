@@ -4,7 +4,7 @@ var messageTimeout
 const gQueryOptions = {
   filterBy: { txt: '', minRating: 0 },
   sortBy: {},
-  page: { idx: 0, size: 4 }
+  page: { idx: 0, size: 5 }
 
 }
 function onInit() {
@@ -33,10 +33,28 @@ function render() {
       <tr>
         <td class="title">${book.title}</td>
         <td class="price">${book.price}</td>
-        <td class="price">${book.rating}</td>
+        <td class="rating">${book.rating}</td>
         <td>
           <button class="read" onclick="onReadBook('${book.id}','${book.title}')">Read</button>
-          <button class="update" onclick="onUpdateBook('${book.id}')">Update</button>
+            <button class="update" onclick="openUpdateBookModal('${book.id}')">Update</button>
+<dialog class="updateBookModal modal hidden">
+      <form onsubmit="onUpdateBook(event,'${book.id}')">
+        <h2>Update Book</h2>
+        <label for="title">Title:</label>
+        <input type="text" class="upTitle" required>
+        <label for="price">Price:</label>
+        <input type="number" class="upPrice" required>
+        <label for="rating">Rating:</label>
+        <input type="number" class="upRating" min="1" max="5" required>
+        <label for="imgUrl">Image URL:</label>
+        <input type="text" class="upImgUrl">
+        <button type="submit">Update</button>
+      </form>
+      <button onclick="closeUpdateBookModal()">Close</button>
+    </dialog>
+
+
+
           <button class="delete" onclick="onRemoveBook(event,'${book.id}')">Delete</button>
         </td>
 
@@ -99,8 +117,6 @@ function onSetSortBy() {
 
 
 
-
-
 function onRemoveBook(ev, bookId) {
   ev.stopPropagation()
 
@@ -148,37 +164,58 @@ function onPreviousPage(ev) {
   render()
 }
 
-function onUpdateBook(bookId) {
 
-  const price = prompt('Enter a new book price')
-  if (price < 0 || isNaN(price) || !price) return alert('Invalid number input!')
 
-  updatePrice(price, bookId)
+// Function to open the modal for adding a book
+function openAddBookModal() {
+  const modal = document.querySelector('.addBookModal')
+  modal.style.display = 'flex'
+}
+
+// Function to close the modal for adding a book
+function closeAddBookModal() {
+  const modal = document.querySelector('.addBookModal')
+  modal.style.display = 'none'
+}
+
+
+function openUpdateBookModal(bookID) {
+  const modal = document.querySelector('.updateBookModal')
+  modal.style.display = 'flex'
+}
+
+// Function to close the modal for adding a book
+function closeUpdateBookModal(bookID) {
+  const modal = document.querySelector('.updateBookModal')
+  modal.style.display = 'none'
+}
+
+// Function to handle form submission and add a new book
+function onAddBook(event) {
+  event.preventDefault()
+
+  const title = document.querySelector('.title').value
+  const price = +document.querySelector('.price').value
+  const rating = +document.querySelector('.rating').value
+  const imgUrl = document.querySelector('.imgUrl').value
+
+  addBook(title, price, rating, imgUrl)
+  closeAddBookModal()
 
   render()
 }
+// function onUpdateBook(ev, bookId) {
+//   ev.preventDefault()
 
-function onAddBook() {
+//   const title = document.querySelector('.upTitle').value
+//   const price = +document.querySelector('.upPrice').value
+//   const rating = +document.querySelector('.upRating').value
+//   const imgUrl = document.querySelector('.upImgUrl').value
+//   updateBook(bookId, title, price, rating, imgUrl)
+//   closeUpdateBookModal()
+//   render()
+// }
 
-  const addTitle = prompt('Enter a book title')
-  const addPrice = +prompt('Enter a book price')
-  const elMessage = document.querySelector('.message')
-  clearTimeout(messageTimeout)
-
-  if (!addTitle || !addPrice || isNaN(addPrice)) return alert('Invalid Input!')
-
-  addBook(addTitle, addPrice)
-
-  elMessage.innerText = 'Book added successfully!'
-  elMessage.classList.remove('hidden')
-  messageTimeout = setTimeout(() => {
-    elMessage.innerText = ''
-    elMessage.classList.add('hidden')
-  }, 2000)
-  countBookPrice()
-
-  render()
-}
 
 function onReadBook(bookId, bookTitle) {
   const elModal = document.querySelector('.book-details')
