@@ -92,8 +92,6 @@ button {
  background-image: none;
 }
 
-
-
 .hidden {
  display: none;
 }
@@ -158,10 +156,10 @@ form>button {
  width: max-content;
 }
 
-.addBookModal {
- left: 85%;
- top: 25%;
- position: fixed;
+.add-book-modal {
+ /* position: fixed;
+	left: 85%;
+	top: 25%; */
  background-color: rgba(45, 45, 45, 0.9);
  padding: 20px;
  border-radius: 10px;
@@ -181,7 +179,6 @@ form>button {
 .book-details {
  background-color: #333333;
 }
-
 
 .grid-item {
  background-color: #333333;

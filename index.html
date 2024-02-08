@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book Shop</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body onload="onInit()">
@@ -14,42 +14,47 @@
   <section class="book-filter"></section>
   <fieldset>
     <legend>Filter and Sorting</legend>
+
     <div class="message hidden"></div>
+
     <button onclick="openAddBookModal()">Add Book</button>
 
-    <dialog class="addBookModal modal hidden">
-      <form onsubmit="onAddBook(event)">
+    <dialog class="add-book-modal modal">
+      <form onsubmit="onAddBook()" method="dialog">
         <h2>Add Book</h2>
+
         <label for="title">Title:</label>
         <input type="text" class="title" required>
+
         <label for="price">Price:</label>
         <input type="number" class="price" required>
+
         <label for="rating">Rating:</label>
         <input type="number" class="rating" min="1" max="5" required>
+
         <label for="imgUrl">Image URL:</label>
         <input type="text" class="imgUrl">
+
         <button type="submit">Add</button>
         <button value="" formnovalidate onclick="closeAddBookModal()">Close</button>
       </form>
     </dialog>
 
-    <button title="Previous Page" onclick="onPreviousPage(event)">Previous Page</button><button title="Next Page"
-      onclick="onNextPage(event)">Next Page</button>
-    <form onsubmit="onSearchBook(event)" class="search-book">
-      <input class="serach-input" type="text" placeholder="Search books">
-      <button>Search</button>
-      <button onclick="onClearSearch(event)">Clear Search</button>
-    </form>
-    <div class="filter-by">
-      <select class="book-list" onchange="onSetFilterBy({title: this.value})">
-        <option value="">Select book</option>
-      </select>
+    <button title="Previous Page" onclick="onPreviousPage()">Previous Page</button>
+    <button title="Next Page" onclick="onNextPage()">Next Page</button>
 
+    <!-- <form onsubmit="onSearchBook(event)" class="search-book">
+            <button>Search</button>
+        </form> -->
+
+    <div class="filter-by">
+      <input oninput="onSetFilterBy()" class="filter-txt" type="text" placeholder="Search books">
       <label>
         <span>Min Rating:</span>
-        <input type="range" min="0" max="5" value="0"
-          onchange="this.title=this.value;onSetFilterBy({minRating: +this.value})" />
+        <input type="range" min="0" max="5" value="0" class="filter-min-rating"
+          onchange="this.title=this.value;onSetFilterBy()" />
       </label>
+      <button onclick="onClearSearch(event)">Clear Search</button>
     </div>
 
     <div class="sort-by">
@@ -60,27 +65,16 @@
         <option value="price">By Price</option>
       </select>
 
-      <!-- 
-      <label>
-        <span>Descending</span>
-        <input class="sort-desc" type="checkbox" oninput="onSetSortBy()" />
-      </label> -->
+      <input type="radio" class="ascending-radio" name="sort-by" value="1" onchange="onSetSortBy()" checked>
+      <label for="ascending-radio">Ascending</label><br>
 
-
-      <form>
-        <input type="radio" class="ascendingRadio" name="sortBy" value="title" onchange="onSetSortBy()">
-        <label for="ascendingRadio">Ascending</label><br>
-
-        <input type="radio" class="descendingRadio" name="sortBy" value="minRating" onchange="onSetSortBy()">
-        <label for="descendingRadio">Descending</label><br>
-      </form>
-
-
-
+      <input type="radio" class="descending-radio" name="sort-by" value="-1" onchange="onSetSortBy()">
+      <label for="descending-radio">Descending</label><br>
     </div>
 
   </fieldset>
   </section>
+
   <dialog class="modal">
     <h3></h3>
     <h4>Min Rating <span></span> </h4>
@@ -88,7 +82,6 @@
     <p></p>
     <button onclick="onCloseModal()">Close</button>
   </dialog>
-
 
   <table>
     <thead>
@@ -99,8 +92,7 @@
         <td>Actions</td>
       </tr>
     </thead>
-    <tbody class="book-table">
-    </tbody>
+    <tbody class="book-table"></tbody>
   </table>
 
   <dialog class="book-details">
@@ -116,22 +108,11 @@
     </form>
   </dialog>
 
-
-
   <footer>
-    <span class="expensive">
-
-    </span>
-    <span class="average">
-
-    </span>
-    <span class="cheap">
-
-    </span>
-
-    <span class="total">
-
-    </span>
+    <span class="expensive"></span>
+    <span class="average"></span>
+    <span class="cheap"></span>
+    <span class="total"></span>
   </footer>
 
   <!-- Services -->

@@ -8,7 +8,7 @@ const gBookTitles = ['The Return of the king', 'A Clash of Kings', 'Harry Potter
 
 _createBooks()
 
-function getBooks(searchText, options = {}) {
+function getBooks(options = {}) {
   var books = _filterBooks(options.filterBy)
 
   if (options.sortBy.title) {
@@ -18,19 +18,12 @@ function getBooks(searchText, options = {}) {
   } else if (options.sortBy.price) {
     books.sort((book1, book2) => (book1.price - book2.price) * options.sortBy.price)
   }
+
   if (options.page) {
     var startIdx = options.page.idx * options.page.size
     books = books.slice(startIdx, startIdx + options.page.size)
   }
-
-
-  if (!searchText) {
-    return books
-  } else {
-    searchText = searchText.trim().toLowerCase()
-    return books.filter(book => book.title.toLowerCase().includes(searchText))
-  }
-
+  return books
 }
 
 
@@ -69,8 +62,10 @@ function addBook(title, price, rating, imgUrl) {
     imgUrl,
   }
 
-  gBooks.unshift(newBook);
-  _saveBooks();
+  gBooks.unshift(newBook)
+  _saveBooks()
+
+  return newBook
 }
 
 function readBook(bookId) {
@@ -90,30 +85,30 @@ function _createBooks() {
   if (!gBooks || gBooks.length === 0) {
 
     gBooks = [
-      {
-        id: makeId(),
-        title: 'A Clash of Kings',
-        price: 55,
-        rating: getRandomIntInc(1, 5),
-        imgUrl: 'imgs/A-Clash-of-Kings.jpg'
-      },
-      {
-        id: makeId(),
-        title: 'The Return of the king',
-        price: 100,
-        rating: getRandomIntInc(1, 5),
-        imgUrl: 'imgs/The-Return-of-the-King.jpg'
-      },
-      {
-        id: makeId(),
-        title: 'Harry Potter and the Order of the Phoenix',
-        price: 75,
-        rating: getRandomIntInc(1, 5),
-        imgUrl: 'imgs/Harry-Potter.jpg'
-      },
-
+      _createBook('A Clash of Kings', 'imgs/A-Clash-of-Kings.jpg'),
+      _createBook('The Return of the king', 'imgs/The-Return-of-the-King.jpg'),
+      _createBook('Harry Potter and the Order of the Phoenix', 'imgs/Harry-Potter.jpg'),
+      _createBook('A Clash of Kings', 'imgs/A-Clash-of-Kings.jpg'),
+      _createBook('The Return of the king', 'imgs/The-Return-of-the-King.jpg'),
+      _createBook('Harry Potter and the Order of the Phoenix', 'imgs/Harry-Potter.jpg'),
+      _createBook('A Clash of Kings', 'imgs/A-Clash-of-Kings.jpg'),
+      _createBook('The Return of the king', 'imgs/The-Return-of-the-King.jpg'),
+      _createBook('Harry Potter and the Order of the Phoenix', 'imgs/Harry-Potter.jpg'),
+      _createBook('A Clash of Kings', 'imgs/A-Clash-of-Kings.jpg'),
+      _createBook('The Return of the king', 'imgs/The-Return-of-the-King.jpg'),
+      _createBook('Harry Potter and the Order of the Phoenix', 'imgs/Harry-Potter.jpg'),
     ]
     _saveBooks()
+  }
+}
+
+function _createBook(title, imgUrl) {
+  return {
+    id: makeId(),
+    title,
+    price: getRandomIntInc(20, 220),
+    rating: getRandomIntInc(1, 5),
+    imgUrl,
   }
 }
 

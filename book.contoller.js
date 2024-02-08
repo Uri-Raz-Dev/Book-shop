@@ -1,23 +1,21 @@
 'use strict'
-var gSearchTerm
-var messageTimeout
+
 const gQueryOptions = {
   filterBy: { txt: '', minRating: 0 },
   sortBy: {},
   page: { idx: 0, size: 5 }
-
 }
+
 function onInit() {
-  renderBookTitles()
+  //   renderBookTitles()
   render()
 }
-
 
 function render() {
   const elBookList = document.querySelector('.book-table')
   const elInput = document.querySelector('.search-book input')
 
-  const books = getBooks(gSearchTerm, gQueryOptions)
+  const books = getBooks(gQueryOptions)
 
   if (books.length === 0 && elInput.value) {
     elBookList.innerHTML = `
@@ -55,7 +53,7 @@ function render() {
 
 
 
-          <button class="delete" onclick="onRemoveBook(event,'${book.id}')">Delete</button>
+          <button class="delete" onclick="onRemoveBook('${book.id}')">Delete</button>
         </td>
 
       </tr>
@@ -80,28 +78,21 @@ function renderBookTitles() {
 }
 
 function onSetFilterBy() {
-  const elTitle = document.querySelector('.filter-by select')
-  const elMinRating = document.querySelector('.filter-by input')
+  const elMinRating = document.querySelector('.filter-by .filter-min-rating')
+  const elTxt = document.querySelector('.filter-by .filter-txt')
 
-  gQueryOptions.filterBy.txt = elTitle.value
-  gQueryOptions.filterBy.minRating = elMinRating.value
+  gQueryOptions.filterBy.txt = elTxt.value
+  gQueryOptions.filterBy.minRating = +elMinRating.value
 
+  gQueryOptions.page.idx = 0
   render()
 }
 
 function onSetSortBy() {
   const elSortBy = document.querySelector('.sort-by select')
-  const ascendingRadio = document.querySelector('.ascendingRadio')
-  const descendingRadio = document.querySelector('.descendingRadio')
-
   const sortBy = elSortBy.value
 
-  var dir = 1
-  if (ascendingRadio.checked) {
-    dir = 1
-  } else if (descendingRadio.checked) {
-    dir = -1
-  }
+  var dir = +document.querySelector('[name="sort-by"]:checked').value
 
   if (sortBy === 'title') {
     gQueryOptions.sortBy = { title: dir }
@@ -111,70 +102,46 @@ function onSetSortBy() {
     gQueryOptions.sortBy = { price: dir }
   }
 
-
+  gQueryOptions.page.idx = 0
   render()
 }
 
-
-
-function onRemoveBook(ev, bookId) {
-  ev.stopPropagation()
-
-  const elMessage = document.querySelector(`.message`)
-  clearTimeout(messageTimeout)
+function onRemoveBook(bookId) {
 
   removeBook(bookId)
-  elMessage.innerText = 'Book removed successfully!'
-  elMessage.classList.remove('hidden')
-  messageTimeout = setTimeout(() => {
-    elMessage.innerText = ''
-    elMessage.classList.add('hidden')
-  }
-    , 2000)
+  flashMsg(`Removed book ${bookId}`)
 
   render()
 }
 
-function onNextPage(ev) {
-  ev.stopPropagation()
+function onNextPage() {
 
   const bookCount = getBookCount(gQueryOptions.filterBy)
 
   if (bookCount > (gQueryOptions.page.idx + 1) * gQueryOptions.page.size) {
     gQueryOptions.page.idx++
-    console.log(gQueryOptions.page.idx)
-
   } else {
     gQueryOptions.page.idx = 0
   }
   render()
 }
-function onPreviousPage(ev) {
-  ev.stopPropagation()
+function onPreviousPage() {
 
   const bookCount = getBookCount(gQueryOptions.filterBy)
 
   if (gQueryOptions.page.idx > 0) {
     gQueryOptions.page.idx--
   } else {
-
     gQueryOptions.page.idx = Math.ceil(bookCount / gQueryOptions.page.size) - 1
   }
-
   render()
 }
 
 
 
 function openAddBookModal() {
-  const modal = document.querySelector('.addBookModal')
-  modal.style.display = 'flex'
-}
-
-function closeAddBookModal() {
-  const modal = document.querySelector('.addBookModal')
-  modal.style.display = 'none'
-  modal.close()
+  const elModal = document.querySelector('.add-book-modal')
+  elModal.showModal()
 }
 
 
@@ -190,44 +157,27 @@ function closeUpdateBookModal(ev) {
 
 }
 
-function onAddBook(event) {
-  event.preventDefault()
-  const elMessage = document.querySelector(`.message`)
-  clearTimeout(messageTimeout)
+function onAddBook() {
+
   const title = document.querySelector('.title').value
   const price = +document.querySelector('.price').value
   const rating = +document.querySelector('.rating').value
   const imgUrl = document.querySelector('.imgUrl').value
 
   addBook(title, price, rating, imgUrl)
-  closeAddBookModal()
-  elMessage.innerText = 'Book added successfully!'
-  elMessage.classList.remove('hidden')
-  messageTimeout = setTimeout(() => {
-    elMessage.innerText = ''
-    elMessage.classList.add('hidden')
-  }
-    , 2000)
+  flashMsg(`Added book ${title}`)
+
   render()
 }
 
 function onUpdateBook(ev, bookId) {
   ev.preventDefault()
-  const elMessage = document.querySelector(`.message`)
-  clearTimeout(messageTimeout)
   const title = document.querySelector(`#updateBookModal-${bookId} .upTitle`).value
   const price = +document.querySelector(`#updateBookModal-${bookId} .upPrice`).value
   const rating = +document.querySelector(`#updateBookModal-${bookId} .upRating`).value
   const imgUrl = document.querySelector(`#updateBookModal-${bookId} .upImgUrl`).value
   updateBook(bookId, title, price, rating, imgUrl)
   closeUpdateBookModal()
-  elMessage.innerText = 'Book updated successfully!'
-  elMessage.classList.remove('hidden')
-  messageTimeout = setTimeout(() => {
-    elMessage.innerText = ''
-    elMessage.classList.add('hidden')
-  }
-    , 2000)
   render()
 }
 
@@ -266,26 +216,13 @@ function onReadBook(bookId, bookTitle) {
   elModal.showModal()
 }
 
-function onSearchBook(ev) {
-  ev.preventDefault()
-  const txt = document.querySelector('.serach-input').value
-
-  gSearchTerm = txt
-
-  render()
-}
-function onClearSearch(ev) {
-  ev.preventDefault()
-  gSearchTerm = ''
-  const txt = document.querySelector('.serach-input').value = ''
-  document.querySelector('.filter-by select').value = ""
-  document.querySelector('.filter-by input').value = 0
+function onClearSearch() {
+  document.querySelector('.filter-by .filter-txt').value = ''
+  document.querySelector('.filter-by .filter-min-rating').value = 0
 
   gQueryOptions.filterBy.txt = ''
   gQueryOptions.filterBy.minRating = 0
 
-
-  gSearchTerm = txt
   render()
 }
 
@@ -306,3 +243,10 @@ function updateBookPriceCount() {
 }
 
 
+function flashMsg(msg) {
+  const el = document.querySelector('.message')
+
+  el.innerText = msg
+  el.classList.remove('hidden')
+  setTimeout(() => el.classList.add('hidden'), 3000)
+}
